@@ -27,7 +27,6 @@ namespace CSharpLab5.ViewModels
                 SetValue(ref processes, value);
             }
         }
-
         public ProcessData SelectedProcess
         {
             get => selectedProcess;
@@ -40,12 +39,15 @@ namespace CSharpLab5.ViewModels
         public ICommand OpenSelectedProcessDirCommand { get; }
         public ICommand KillAndRemoveSelectedProcessCommand { get; } //, _ => ProcessSelected() )
 
+        ProcessData selectedProcess;
         #endregion
 
         ObservableCollection<ProcessData> processes;
-        ProcessData selectedProcess;
+        // keeping ref here because i don't want to check what will happen with the threads obj started
+        // and because later this guy will know how to stop
+        PeriodicalProcessesUpdater processUpdater; 
 
-        PeriodicalProcessesUpdater processUpdater;
+        int prevSelectedId;
 
         public MainWindowViewModel()
         {
@@ -53,7 +55,8 @@ namespace CSharpLab5.ViewModels
             Processes = new ObservableCollection<ProcessData>();
 
             processUpdater = new PeriodicalProcessesUpdater(this);
-            processUpdater.StartRefreshing(CollectionUpdateInterval, ProcessesRefreshInterval, null, null);
+            processUpdater.StartRefreshing(CollectionUpdateInterval, ProcessesRefreshInterval, 
+                OnBeforeProcessesUpdate, OnProcessesUpdate);
 
             ShowModulesForSelectedProcessCommand = new DelegateCommand(ShowModulesForSelectedProcess, _ => ProcessSelected() );
             ShowThreadsForSelectedProcessCommand = new DelegateCommand(ShowThreadsForSelectedProcess, _ => ProcessSelected() );
@@ -62,7 +65,6 @@ namespace CSharpLab5.ViewModels
         }
 
         #region ContextMenu commands
-
         void ShowModulesForSelectedProcess(object o)
         {
             Debug.Assert(ProcessSelected());
@@ -119,12 +121,28 @@ namespace CSharpLab5.ViewModels
             SelectedProcess = null;
             //TODO: select next/prev index
         }
-
         #endregion
 
         bool ProcessSelected()
         {
             return SelectedProcess != null;
+        }
+
+        // this two should have re-selected item on update
+        void OnBeforeProcessesUpdate()
+        {
+            prevSelectedId = SelectedProcess.Id;
+        }
+
+        // and this one 100% sets the SelectedProcess value to a valid one
+        // but the grid is not updated - 
+        // mb after that the value gets overriden to null by some default behaviour of the datagrid
+        // or it is some weird closure - thing, or non-ui thread changes problem
+        // anyway, i tried
+        // this is also invoked in Post to UI thread
+        void OnProcessesUpdate()
+        {
+            SelectedProcess = Processes.First(p => p.Id == prevSelectedId);
         }
 
     }

@@ -13,7 +13,7 @@ namespace CSharpLab5
     /// <remarks>
     /// stupid name
     /// </remarks>
-    class MyProcess : ObservableObject
+    class ProcessData : ObservableObject
     {
         #region Bindable Props
         // caching process props, to have a snapshot of the time he was last successfull refreshed
@@ -53,6 +53,11 @@ namespace CSharpLab5
             get => ownerName;
             set => SetValue(ref ownerName, value);
         }
+        public string Filename
+        {
+            get => filename;
+            set => SetValue(ref filename, value);
+        }
         public DateTime LaunchDateTime
         {
             get => launchDateTime;
@@ -62,6 +67,11 @@ namespace CSharpLab5
         {
             get => modules;
             set => SetValue(ref modules, value);
+        }
+        public ProcessThreadCollection Threads
+        {
+            get => threads;
+            set => SetValue(ref threads, value);
         }
         #endregion
 
@@ -76,11 +86,13 @@ namespace CSharpLab5
         long bytesCount;
         int threadsCount;
         string ownerName;
+        string filename;
         DateTime launchDateTime;
         ProcessModuleCollection modules;
+        ProcessThreadCollection threads;
         #endregion
 
-        public MyProcess(Process process)
+        public ProcessData(Process process)
         {
             if(process == null)
                 { throw new ArgumentNullException(nameof(process)); }
@@ -115,22 +127,23 @@ namespace CSharpLab5
 
         /// <summary>
         /// refreshes the wrapper cached props
-        /// to be up to date to those of <paramref name="process"/>
+        /// to be up to date to those of <paramref name="upToDateProcess"/>
         /// </summary>
-        /// <param name="process"></param>
         void RefreshProperties(Process upToDateProcess)
         {
-            Debug.Assert(! upToDateProcess.HasExited);
+            Debug.Assert(!upToDateProcess.HasExited);
 
-            Name = process.ProcessName;
-            Id = process.Id;
-            Responding = process.Responding;
-            CpuPercentage = ProcessUtils.GetCpuPercentage(process);
-            BytesCount = process.WorkingSet64;
-            ThreadsCount = process.Threads.Count;
-            OwnerName = ProcessUtils.GetProcessOwner(process);
-            LaunchDateTime = process.StartTime;
-            Modules = process.Modules;
+            Name = upToDateProcess.ProcessName;
+            Id = upToDateProcess.Id;
+            Responding = upToDateProcess.Responding;
+            CpuPercentage = ProcessUtils.GetCpuPercentage(upToDateProcess);
+            BytesCount = upToDateProcess.WorkingSet64;
+            ThreadsCount = upToDateProcess.Threads.Count;
+            OwnerName = ProcessUtils.GetProcessOwner(upToDateProcess);
+            Filename = upToDateProcess.MainModule.FileName;
+            LaunchDateTime = upToDateProcess.StartTime;
+            Modules = upToDateProcess.Modules;
+            Threads = upToDateProcess.Threads;
         }
 
         //void NotifyProcessDependentPropertiesChanged()

@@ -21,13 +21,15 @@
 
         <DataGrid Name="ProcessesGrid" Grid.Column="0" Grid.ColumnSpan="8" AutoGenerateColumns="False"
                   ItemsSource="{Binding Processes, Mode=OneWay}" 
-                  SelectedItem="{Binding SelectedProcess, Mode=TwoWay}" 
-                  >
-            
+                  SelectedItem="{Binding SelectedProcess, Mode=TwoWay}" >
             <DataGrid.ContextMenu>
                 <ContextMenu >
-                    <MenuItem Header="View Modules" 
+                    <MenuItem Header="Modules" 
                         Command="{Binding ShowModulesForSelectedProcessCommand}"/>
+                    <MenuItem Header="Threads" 
+                              Command="{Binding ShowThreadsForSelectedProcessCommand}"/>
+                    <MenuItem Header="Open directory" 
+                              Command="{Binding OpenSelectedProcessDirCommand}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
@@ -38,6 +40,7 @@
                 <DataGridTextColumn Header="Memory Used" Binding="{Binding BytesCount}"/>
                 <DataGridTextColumn Header="Threads" Binding="{Binding ThreadsCount}"/>
                 <DataGridTextColumn Header="OwnerName" Binding="{Binding OwnerName}"/>
+                <DataGridTextColumn Header="OwnerName" Binding="{Binding Filename}"/>
                 <DataGridTextColumn Header="LaunchDateTime" Binding="{Binding LaunchDateTime}"/>
             </DataGrid.Columns>
         </DataGrid>

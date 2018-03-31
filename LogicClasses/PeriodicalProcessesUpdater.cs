@@ -59,7 +59,7 @@ namespace CSharpLab5.LogicClasses
                 Debug.Assert(mainWindowViewModel.Processes != null);
 
                 // change not reflected on UI, even with sync!
-                IEnumerable<MyProcess> processes = ProcessFetcher.FetchProcesses();
+                IEnumerable<ProcessData> processes = ProcessFetcher.FetchProcesses();
 
                 synchronizationContext.Post(_ =>
                 {

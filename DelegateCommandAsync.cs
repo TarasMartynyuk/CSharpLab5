@@ -34,7 +34,6 @@ namespace CSharpLab5
         public async void Execute(object parameter)
         {
             await _executeAsync(parameter);
-            Console.WriteLine("execute end");
         }
     }
 }

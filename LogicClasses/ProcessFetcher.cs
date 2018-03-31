@@ -6,31 +6,33 @@ namespace CSharpLab5.LogicClasses
 {
     static class ProcessFetcher
     {
-        static readonly HashSet<string> UnreachableProcesses;
+        static readonly HashSet<string> InaccessibleProcesses;
 
         static ProcessFetcher()
         {
-            UnreachableProcesses = new HashSet<string>
+            InaccessibleProcesses = new HashSet<string>
             {
+                "bash", // yup, on windows
                 "services",
                 "svchost",
                 "smss",
                 "SecurityHealthService",
-                "bash", // yup, on windows
                 "wininit",
                 "csrss",
                 "init",
                 "Memory Compression",
                 "System",
-                "Idle"
+                "Idle",
+                "git",
+                "git-remote-http"
             };
         }
 
-        public static IEnumerable<MyProcess> FetchProcesses()
+        public static IEnumerable<ProcessData> FetchProcesses()
         {
             //return new ObservableCollection<ProcessData>(
             //    Process.GetProcesses().Select(p => new ProcessData(p)));
-            var res =  new List<MyProcess>();
+            var res =  new List<ProcessData>();
            
             Process[] processes = Process.GetProcesses();
 
@@ -42,10 +44,10 @@ namespace CSharpLab5.LogicClasses
                 try
                 {
                     //var p = processes[i];
-                    if (UnreachableProcesses.Contains(p.ProcessName) || p.HasExited)
+                    if (InaccessibleProcesses.Contains(p.ProcessName) || p.HasExited)
                         { continue; }
 
-                    res.Add(new MyProcess(p));
+                    res.Add(new ProcessData(p));
                 }
                 catch (System.ComponentModel.Win32Exception e)
                 {

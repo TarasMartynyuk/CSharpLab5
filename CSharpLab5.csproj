@@ -97,15 +97,14 @@
     <Compile Include="LogicClasses\ActionRepeater.cs" />
     <Compile Include="LogicClasses\ProcessesUpdater.cs" />
     <Compile Include="LogicClasses\ProcessFetcher.cs" />
-    <Compile Include="LogicClasses\ProcessUpdater.cs" />
-    <Compile Include="ObsBase.cs" />
+    <Compile Include="LogicClasses\PeriodicalProcessesUpdater.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="ProcessData.cs" />
     <Compile Include="ProcessUtils.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\ModuleListViewModel.cs" />
     <Compile Include="Views\ModuleCellView.cs" />
     <Compile Include="Views\ModulesListView.cs" />
+    <Compile Include="ViewModels\ModulesListViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -15,7 +15,6 @@ namespace CSharpLab5
         #region Bindable Props
 
         public string Name { get; set; } //=> process.ProcessName;
-
         //{
         //    get => name;
         //    set => SetValue(ref name, value);
@@ -28,7 +27,7 @@ namespace CSharpLab5
         public int ThreadsCount => process.Threads.Count; 
         public string OwnerName { get; set; }
         public DateTime LaunchDateTime => process.StartTime;
-        public ProcessModuleCollection Modules;
+        public ProcessModuleCollection Modules => process.Modules;
         #endregion
 
         readonly Process process;

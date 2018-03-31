@@ -1,17 +1,39 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace CSharpLab5.Views
 {
-    class ModulesListView : UserControl
+    class ModulesInfoView : UserControl
     {
-        public ModulesListView()
+        public ModulesInfoView()
         {
-            var listView = new ListView
+            HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+
+            var grid = new Grid();
+
+            var dataGrid = new DataGrid()
             {
-                ItemTemplate = new System.Windows.DataTemplate(typeof(object))
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch,
+                AutoGenerateColumns = false
             };
 
-            listView.SetBinding(ItemsControl.ItemsSourceProperty, "Modules");
+            dataGrid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "ModuleName",
+                Binding = new Binding("ModuleName"),
+            });
+
+            dataGrid.Columns.Add(new DataGridTextColumn()
+            {
+                Header = "FileName",
+                Binding = new Binding("FileName"),
+            });
+
+            dataGrid.SetBinding(ItemsControl.ItemsSourceProperty, "Modules");
+
+            grid.Children.Add(dataGrid);
+
+            Content = grid;
         }
 
     }

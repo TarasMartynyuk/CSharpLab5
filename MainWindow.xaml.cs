@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using CSharpLab5.LogicClasses;
 using CSharpLab5.ViewModels;
+using CSharpLab5.Views;
 
 namespace CSharpLab5
 {
@@ -15,10 +17,44 @@ namespace CSharpLab5
         public MainWindow()
         {
             InitializeComponent();
-            ProcessesGrid.DataContext = new MainWindowViewModel();
+            //ProcessesGrid.DataContext = new MainWindowViewModel();
             // still awful performance
-            ProcessesGrid.EnableRowVirtualization = true;
-            ProcessesGrid.EnableColumnVirtualization = true;
+            //ProcessesGrid.EnableRowVirtualization = true;
+            //ProcessesGrid.EnableColumnVirtualization = true;
+
+            var p = new ProcessData(Process.GetProcesses()[10]);
+
+
+            var listV = new ModulesInfoView
+            {
+                DataContext = p,
+                
+            };
+
+            //Content = new ModuleCellView();
+            Content = listV;
+
+
+
+        }
+
+        void butt_Click(object sender, RoutedEventArgs e)
+        {
+            //var p = new ProcessData(Process.GetProcesses()[10]);
+
+
+            //var listV = new ModulesListView
+            //{
+            //    DataContext = p
+            //};
+
+
+            //var modulesWindow = new Window()
+            //{
+            //    Content = listV
+            //};
+
+            //modulesWindow.ShowDialog();
         }
     }
 }

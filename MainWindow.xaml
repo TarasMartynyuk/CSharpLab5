@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:CSharpLab5"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    
-    <Grid Name="MainGrid">
+    <Button Name="butt" Click="butt_Click" Width="100" Height="100"></Button>
+
+    <!--<Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -34,5 +35,5 @@
                 <DataGridTextColumn Header="LaunchDateTime" Binding="{Binding LaunchDateTime}"/>
             </DataGrid.Columns>
         </DataGrid>
-    </Grid>
+    </Grid>-->
 </Window>

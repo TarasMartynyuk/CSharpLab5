@@ -11,6 +11,10 @@ namespace CSharpLab5.LogicClasses
         // some closure problem?
         public static void UpdateProcessCollection(IEnumerable<ProcessData> newProcesses, ObservableCollection<ProcessData> processes)
         {
+            if(processes == null)
+            {
+                throw new System.ArgumentNullException(nameof(processes));
+            }
             // so yeah, this is the minimal ammount of work that needs to be done in the main thread
             //var collection = new ObservableCollection<ProcessData>();
             // please write me what i did wrong in setting up binding to view, and updating vm async-y

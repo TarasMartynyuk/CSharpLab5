@@ -22,33 +22,36 @@ namespace CSharpLab5.ViewModels
             }
         }
 
+        public ProcessData SelectedProcess
+        {
+            get => selectedProcess;
+            set => SetValue(ref selectedProcess, value);
+        }
+
         ObservableCollection<ProcessData> processes;
+        ProcessData selectedProcess;
+
         PeriodicalProcessesUpdater processUpdater;
 
         public MainWindowViewModel()
         {
+            // updater must have smth to update, he does not instantiate 
+            Processes = new ObservableCollection<ProcessData>();
+
             processUpdater = new PeriodicalProcessesUpdater(this);
-            processUpdater.StartRefreshing(CollectionUpdateInterval, ProcessesRefreshInterval, OnBeforeProcessesUpdate, OnProcessesUpdate);
+            processUpdater.StartRefreshing(CollectionUpdateInterval, ProcessesRefreshInterval, null, null);
         }
 
         #region ContextMenu commands
-        void 
+
+        void ShowModulesForSelectedProcess()
+        {
+            Debug.Assert(SelectedProcess != null);
+        }
 
         #endregion
 
 
-
-
-        void OnBeforeProcessesUpdate()
-        {
-            Debug.WriteLine("OnBeforeUpdate");
-            //prevSelectedProcId = SelectedProcess?.Id ?? -1;
-        }
-
-        void OnProcessesUpdate()
-        {
-            Debug.WriteLine("OnUpdate");
-        }
 
 
     }

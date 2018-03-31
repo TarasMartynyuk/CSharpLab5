@@ -19,8 +19,10 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <DataGrid Name="ProcessesGrid" Grid.Column="0" Grid.ColumnSpan="8" 
-                  ItemsSource="{Binding Processes, Mode=OneWay}" AutoGenerateColumns="False" >
+        <DataGrid Name="ProcessesGrid" Grid.Column="0" Grid.ColumnSpan="8" AutoGenerateColumns="False"
+                  ItemsSource="{Binding Processes, Mode=OneWay}" 
+                  SelectedItem="{Binding SelectedProcess, Mode=TwoWay}" 
+                  SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>

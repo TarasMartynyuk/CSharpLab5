@@ -1,44 +1,55 @@
 ﻿using System.Collections.ObjectModel;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using CSharpLab5.LogicClasses;
 
 namespace CSharpLab5.ViewModels
 {
     class MainWindowViewModel : ObservableObject
     {
-        const int ProcessesUpdateInterval = 2000;
-        const int ProcessesRefreshInterval = 2000;
+        const int CollectionUpdateInterval = 1;
+        const int ProcessesRefreshInterval = 1;
 
         public ObservableCollection<ProcessData> Processes
         {
             get => processes;
             set
             {
-                processes = value ?? throw new NullReferenceException(nameof(value));
+                 if(value == null)
+                    { throw new NullReferenceException(nameof(value)); }
                 SetValue(ref processes, value);
             }
         }
 
         ObservableCollection<ProcessData> processes;
-        ProcessUpdater processUpdater;
+        PeriodicalProcessesUpdater processUpdater;
 
         public MainWindowViewModel()
         {
-            Processes = new ObservableCollection<ProcessData>();
-            //Processes = ProcessFetcher.FetchProcesses();
-
-            //foreach(var p in Processes)
-            //{
-            //    p.Refresh();
-            //}
-
-
-            processUpdater = new ProcessUpdater(this);
-            processUpdater.StartRefreshing(ProcessesUpdateInterval, ProcessesRefreshInterval);
+            processUpdater = new PeriodicalProcessesUpdater(this);
+            processUpdater.StartRefreshing(CollectionUpdateInterval, ProcessesRefreshInterval, OnBeforeProcessesUpdate, OnProcessesUpdate);
         }
+
+        #region ContextMenu commands
+        void 
+
+        #endregion
+
+
+
+
+        void OnBeforeProcessesUpdate()
+        {
+            Debug.WriteLine("OnBeforeUpdate");
+            //prevSelectedProcId = SelectedProcess?.Id ?? -1;
+        }
+
+        void OnProcessesUpdate()
+        {
+            Debug.WriteLine("OnUpdate");
+        }
+
 
     }
 }

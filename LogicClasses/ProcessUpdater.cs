@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -8,12 +9,12 @@ using CSharpLab5.ViewModels;
 
 namespace CSharpLab5.LogicClasses
 {
-    class ProcessUpdater
+    class PeriodicalProcessesUpdater
     {
         readonly MainWindowViewModel mainWindowViewModel;
-        SynchronizationContext synchronizationContext;
+        readonly SynchronizationContext synchronizationContext;
 
-        public ProcessUpdater(MainWindowViewModel mainWindowViewModel)
+        public PeriodicalProcessesUpdater(MainWindowViewModel mainWindowViewModel)
         {
             synchronizationContext = SynchronizationContext.Current;
             this.mainWindowViewModel =
@@ -25,29 +26,32 @@ namespace CSharpLab5.LogicClasses
         /// to the mainWindowVM.Processes,
         /// every <paramref name="processDataRefreshInterval"/>, refreshes each process in the mainWindowVM.Processes
         /// </summary>
-        public void StartRefreshing(int collectionRefreshInterval, int processDataRefreshInterval)
+        public void StartRefreshing(int collectionRefreshInterval, int processDataRefreshInterval, 
+            Action OnBeforeUpdate, Action OnCollectionUpdate)
         {
             if(collectionRefreshInterval < 0 || processDataRefreshInterval < 0)
                 { throw new ArgumentException("interval cannot be less then zero"); }
 
-            //mainWindowViewModel.Processes = ProcessFetcher.FetchProcesses();
+            ProcessesUpdater.UpdateProcessCollection(ProcessFetcher.FetchProcesses(), mainWindowViewModel.Processes);
 
             Task.Run(() =>
             {
-                UpdateProcessesCollectionPeriodicallyAsync(collectionRefreshInterval).Wait();
+                UpdateProcessesCollectionPeriodicallyAsync(collectionRefreshInterval, 
+                    OnBeforeUpdate, OnCollectionUpdate).Wait();
             });
 
-            Task.Run(() =>
-            {
-                RefreshProcessesPeriodicallyAsync(processDataRefreshInterval).Wait();
-            });
-
+            //Task.Run(() =>
+            //{
+            //    RefreshProcessesPeriodicallyAsync(processDataRefreshInterval).Wait();
+            //});
         }
 
-        async Task UpdateProcessesCollectionPeriodicallyAsync(int interval)
+        async Task UpdateProcessesCollectionPeriodicallyAsync(int interval, Action OnBeforeUpdate, Action OnUpdate)
         {
             while (true)
             {
+                await Task.Delay(TimeSpan.FromSeconds(interval));
+
                 Debug.Assert(mainWindowViewModel != null);
                 Debug.Assert(mainWindowViewModel.Processes != null);
 
@@ -56,48 +60,34 @@ namespace CSharpLab5.LogicClasses
 
                 synchronizationContext.Post(_ =>
                 {
-                    UpdateVmProcessCollection(processes);
+                    OnBeforeUpdate?.Invoke();
+                    ProcessesUpdater.UpdateProcessCollection(processes, mainWindowViewModel.Processes);
                     Debug.WriteLine("updated collection");
+                    OnUpdate?.Invoke();
                 }, 1);
-
-                await Task.Delay(interval);
+                //return;
             }
         }
 
-        async Task RefreshProcessesPeriodicallyAsync(int interval)
-        {
-            while(true)
-            {
-                await Task.Delay(interval);
+        //async Task RefreshProcessesPeriodicallyAsync(int interval)
+        //{
+        //    while (true)
+        //    {
+        //        Debug.Assert(mainWindowViewModel != null);
+        //        if (mainWindowViewModel.Processes == null)
+        //            { continue; }
 
-                Debug.Assert(mainWindowViewModel != null);
-                if(mainWindowViewModel.Processes == null)
-                    { continue; }
+        //        await Task.Delay(TimeSpan.FromSeconds(interval));
 
-                //synchronizationContext.Post(_ =>
-                //{
-                //    foreach (ProcessData data in mainWindowViewModel.Processes)
-                //    {
-                //        data.Refresh();
-                //        Debug.WriteLine("refreshed process data objs");
-                //    }
-                //}, 1);
-            }
-        }
+        //        synchronizationContext.Post(_ =>
+        //        {
+        //            RefreshData();
+        //        }, 1);
+        //    }
+        //}
 
-        void UpdateVmProcessCollection(IEnumerable<ProcessData> data)
-        {
-            //var collection = new ObservableCollection<ProcessData>();
-            mainWindowViewModel.Processes.Clear();
 
-            foreach (ProcessData p in data)
-            {
-                mainWindowViewModel.Processes.Add(p);
-                //collection.Add(p);
-            }
 
-            //mainWindowViewModel.Processes = collection;
-        }
 
     }
 }

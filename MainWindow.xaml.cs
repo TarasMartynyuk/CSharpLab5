@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using CSharpLab5.LogicClasses;
 using CSharpLab5.ViewModels;
 
 namespace CSharpLab5
@@ -15,7 +19,6 @@ namespace CSharpLab5
             // still awful performance
             ProcessesGrid.EnableRowVirtualization = true;
             ProcessesGrid.EnableColumnVirtualization = true;
-            
         }
     }
 }

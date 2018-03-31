@@ -28,10 +28,10 @@ namespace CSharpLab5
         public int ThreadsCount => process.Threads.Count; 
         public string OwnerName { get; set; }
         public DateTime LaunchDateTime => process.StartTime;
+        public ProcessModuleCollection Modules;
         #endregion
 
         readonly Process process;
-        bool isInAltState;
 
         public ProcessData(Process process)
         {
@@ -41,8 +41,8 @@ namespace CSharpLab5
             CpuPercentage = ProcessUtils.GetCpuPercentage(process);
             OwnerName = ProcessUtils.GetProcessOwner(process);
 
-            var rand = new Random();
-            Name = rand.Next(2) == 1 ? "foo" : "bar";
+            //Name = "ctor";
+            Name = new Random().Next(10).ToString();
         }
 
         public void Refresh()
@@ -50,15 +50,10 @@ namespace CSharpLab5
             if(process.HasExited)
                 { return; }
 
-            isInAltState = !isInAltState;
-            Name = isInAltState ? "bar" : "foo";
-            //OnPropertyChanged(nameof(Name));
-
             process.Refresh();
 
-            //BytesCount = process.WorkingSet64;
             CpuPercentage = ProcessUtils.GetCpuPercentage(process);
-            OwnerName = ProcessUtils.GetProcessOwner(process);
+            //OwnerName = ProcessUtils.GetProcessOwner(process);
 
             NotifyProcessDependentPropertiesChanged();
         }

@@ -2,7 +2,11 @@
 using System;
 using System.Linq;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 using CSharpLab5.LogicClasses;
+using CSharpLab5.Views;
 
 namespace CSharpLab5.ViewModels
 {
@@ -11,6 +15,7 @@ namespace CSharpLab5.ViewModels
         const int CollectionUpdateInterval = 1;
         const int ProcessesRefreshInterval = 1;
 
+        #region binding props
         public ObservableCollection<ProcessData> Processes
         {
             get => processes;
@@ -28,6 +33,10 @@ namespace CSharpLab5.ViewModels
             set => SetValue(ref selectedProcess, value);
         }
 
+        public ICommand ShowModulesForSelectedProcessCommand { get; } //, _ => ProcessSelected() )
+
+        #endregion
+
         ObservableCollection<ProcessData> processes;
         ProcessData selectedProcess;
 
@@ -40,18 +49,48 @@ namespace CSharpLab5.ViewModels
 
             processUpdater = new PeriodicalProcessesUpdater(this);
             processUpdater.StartRefreshing(CollectionUpdateInterval, ProcessesRefreshInterval, null, null);
+
+            ShowModulesForSelectedProcessCommand = new DelegateCommandAsync(ShowModulesForSelectedProcess, _ => ProcessSelected() );
         }
 
         #region ContextMenu commands
 
-        void ShowModulesForSelectedProcess()
+        async Task ShowModulesForSelectedProcess(object o)
         {
-            Debug.Assert(SelectedProcess != null);
+            Debug.Assert(ProcessSelected());
+
+            //var p = new ProcessData(Process.GetProcesses()[10]);
+
+            var listV = new ModulesInfoView
+            {
+                DataContext = SelectedProcess,
+            };
+
+            var modulesWindow = new Window()
+            {
+                Width = 450,
+                Height = 600,
+                Content = listV
+            };
+
+            modulesWindow.ShowDialog();
         }
+
+        async Task KillSelectedProcess()
+        {
+            Debug.Assert(ProcessSelected());
+
+
+
+        }
+     
 
         #endregion
 
-
+        bool ProcessSelected()
+        {
+            return SelectedProcess != null;
+        }
 
 
     }

@@ -17,44 +17,10 @@ namespace CSharpLab5
         public MainWindow()
         {
             InitializeComponent();
-            //ProcessesGrid.DataContext = new MainWindowViewModel();
+            ProcessesGrid.DataContext = new MainWindowViewModel();
             // still awful performance
-            //ProcessesGrid.EnableRowVirtualization = true;
-            //ProcessesGrid.EnableColumnVirtualization = true;
-
-            var p = new ProcessData(Process.GetProcesses()[10]);
-
-
-            var listV = new ModulesInfoView
-            {
-                DataContext = p,
-                
-            };
-
-            //Content = new ModuleCellView();
-            Content = listV;
-
-
-
-        }
-
-        void butt_Click(object sender, RoutedEventArgs e)
-        {
-            //var p = new ProcessData(Process.GetProcesses()[10]);
-
-
-            //var listV = new ModulesListView
-            //{
-            //    DataContext = p
-            //};
-
-
-            //var modulesWindow = new Window()
-            //{
-            //    Content = listV
-            //};
-
-            //modulesWindow.ShowDialog();
+            ProcessesGrid.EnableRowVirtualization = true;
+            ProcessesGrid.EnableColumnVirtualization = true;
         }
     }
 }

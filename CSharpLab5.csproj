@@ -94,6 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DelegateCommandAsync.cs" />
     <Compile Include="LogicClasses\ActionRepeater.cs" />
     <Compile Include="LogicClasses\ProcessesUpdater.cs" />
     <Compile Include="LogicClasses\ProcessFetcher.cs" />
@@ -102,9 +103,7 @@
     <Compile Include="ProcessData.cs" />
     <Compile Include="ProcessUtils.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="Views\ModuleCellView.cs" />
     <Compile Include="Views\ModulesListView.cs" />
-    <Compile Include="ViewModels\ModulesListViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

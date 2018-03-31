@@ -6,9 +6,8 @@
         xmlns:local="clr-namespace:CSharpLab5"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Button Name="butt" Click="butt_Click" Width="100" Height="100"></Button>
 
-    <!--<Grid Name="MainGrid">
+    <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -23,7 +22,14 @@
         <DataGrid Name="ProcessesGrid" Grid.Column="0" Grid.ColumnSpan="8" AutoGenerateColumns="False"
                   ItemsSource="{Binding Processes, Mode=OneWay}" 
                   SelectedItem="{Binding SelectedProcess, Mode=TwoWay}" 
-                  SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
+                  >
+            
+            <DataGrid.ContextMenu>
+                <ContextMenu >
+                    <MenuItem Header="View Modules" 
+                        Command="{Binding ShowModulesForSelectedProcessCommand}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
@@ -35,5 +41,5 @@
                 <DataGridTextColumn Header="LaunchDateTime" Binding="{Binding LaunchDateTime}"/>
             </DataGrid.Columns>
         </DataGrid>
-    </Grid>-->
+    </Grid>
 </Window>

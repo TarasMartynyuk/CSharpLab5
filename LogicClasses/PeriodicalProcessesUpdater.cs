@@ -27,7 +27,7 @@ namespace CSharpLab5.LogicClasses
         /// every <paramref name="processDataRefreshInterval"/>, refreshes each process in the mainWindowVM.Processes
         /// </summary>
         public void StartRefreshing(int collectionRefreshInterval, int processDataRefreshInterval, 
-            Action OnBeforeUpdate, Action OnCollectionUpdate)
+            Action onBeforeUpdate, Action onCollectionUpdate)
         {
             if(collectionRefreshInterval < 0 || processDataRefreshInterval < 0)
                 { throw new ArgumentException("interval cannot be less then zero"); }
@@ -40,7 +40,7 @@ namespace CSharpLab5.LogicClasses
             Task.Run(() =>
             {
                 UpdateProcessesCollectionPeriodicallyAsync(collectionRefreshInterval, 
-                    OnBeforeUpdate, OnCollectionUpdate).Wait();
+                    onBeforeUpdate, onCollectionUpdate).Wait();
             });
 
             //Task.Run(() =>
@@ -49,7 +49,7 @@ namespace CSharpLab5.LogicClasses
             //});
         }
 
-        async Task UpdateProcessesCollectionPeriodicallyAsync(int interval, Action OnBeforeUpdate, Action OnUpdate)
+        async Task UpdateProcessesCollectionPeriodicallyAsync(int interval, Action onBeforeUpdate, Action onUpdate)
         {
             while (true)
             {
@@ -63,10 +63,10 @@ namespace CSharpLab5.LogicClasses
 
                 synchronizationContext.Post(_ =>
                 {
-                    OnBeforeUpdate?.Invoke();
+                    onBeforeUpdate?.Invoke();
                     ProcessesUpdater.UpdateProcessCollection(processes, mainWindowViewModel.Processes);
                     Debug.WriteLine("updated collection");
-                    OnUpdate?.Invoke();
+                    onUpdate?.Invoke();
                 }, 1);
                 //return;
             }

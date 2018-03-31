@@ -4,11 +4,8 @@ using System.Windows.Input;
 
 namespace CSharpLab5
 {
-    public class DelegateCommandAsync : ICommand
+    public class DelegateCommandAsync : DelegateCommand
     {
-        readonly Predicate<object> _canExecute;
-        readonly Func<object, Task> _executeAsync;
-
         public event EventHandler CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;
@@ -21,19 +18,9 @@ namespace CSharpLab5
         }
 
         public DelegateCommandAsync(Func<object, Task> executeAsync, Predicate<object> canExecute)
+            :  base( async _ => { await executeAsync(_); }, canExecute)
         {
-            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
-            _executeAsync = executeAsync ?? throw new ArgumentNullException(nameof(executeAsync));
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute(parameter);
-        }
- 
-        public async void Execute(object parameter)
-        {
-            await _executeAsync(parameter);
         }
     }
 }
+

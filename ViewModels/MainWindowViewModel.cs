@@ -57,6 +57,7 @@ namespace CSharpLab5.ViewModels
             ShowModulesForSelectedProcessCommand = new DelegateCommandAsync(ShowModulesForSelectedProcess, _ => ProcessSelected() );
             ShowThreadsForSelectedProcessCommand = new DelegateCommandAsync(ShowThreadsForSelectedProcess, _ => ProcessSelected() );
             OpenSelectedProcessDirCommand = new DelegateCommandAsync(OpenSelectedProcessDir, _ => ProcessSelected() );
+            //KillAndRemoveSelectedModuleCommand = new DelegateCommandAsync();
         }
 
         #region ContextMenu commands

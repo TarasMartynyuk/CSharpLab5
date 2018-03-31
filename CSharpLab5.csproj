@@ -94,6 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DelegateCommand.cs" />
     <Compile Include="DelegateCommandAsync.cs" />
     <Compile Include="LogicClasses\ActionRepeater.cs" />
     <Compile Include="LogicClasses\ProcessesUpdater.cs" />

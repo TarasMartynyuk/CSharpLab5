@@ -16,7 +16,7 @@ namespace CSharpLab5.ViewModels
         const int ProcessesRefreshInterval = 1;
 
         #region binding props
-        public ObservableCollection<ProcessData> Processes
+        public ObservableCollection<MyProcess> Processes
         {
             get => processes;
             set
@@ -27,25 +27,26 @@ namespace CSharpLab5.ViewModels
             }
         }
 
-        public ProcessData SelectedProcess
+        public MyProcess SelectedProcess
         {
             get => selectedProcess;
             set => SetValue(ref selectedProcess, value);
         }
 
         public ICommand ShowModulesForSelectedProcessCommand { get; } //, _ => ProcessSelected() )
+        public ICommand KillAndRemoveSelectedModuleCommand { get; } //, _ => ProcessSelected() )
 
         #endregion
 
-        ObservableCollection<ProcessData> processes;
-        ProcessData selectedProcess;
+        ObservableCollection<MyProcess> processes;
+        MyProcess selectedProcess;
 
         PeriodicalProcessesUpdater processUpdater;
 
         public MainWindowViewModel()
         {
             // updater must have smth to update, he does not instantiate 
-            Processes = new ObservableCollection<ProcessData>();
+            Processes = new ObservableCollection<MyProcess>();
 
             processUpdater = new PeriodicalProcessesUpdater(this);
             processUpdater.StartRefreshing(CollectionUpdateInterval, ProcessesRefreshInterval, null, null);
@@ -80,10 +81,11 @@ namespace CSharpLab5.ViewModels
         {
             Debug.Assert(ProcessSelected());
 
-
-
+            SelectedProcess.Kill();
+            //Processes.Remove(SelectedProcess);
+            SelectedProcess = null;
+            //TODO: select next/prev index
         }
-     
 
         #endregion
 

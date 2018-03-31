@@ -100,7 +100,7 @@
     <Compile Include="LogicClasses\ProcessFetcher.cs" />
     <Compile Include="LogicClasses\PeriodicalProcessesUpdater.cs" />
     <Compile Include="ObservableObject.cs" />
-    <Compile Include="ProcessData.cs" />
+    <Compile Include="MyProcess.cs" />
     <Compile Include="ProcessUtils.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\ModulesListView.cs" />

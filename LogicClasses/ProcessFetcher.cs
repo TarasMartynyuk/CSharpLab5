@@ -26,11 +26,11 @@ namespace CSharpLab5.LogicClasses
             };
         }
 
-        public static IEnumerable<ProcessData> FetchProcesses()
+        public static IEnumerable<MyProcess> FetchProcesses()
         {
             //return new ObservableCollection<ProcessData>(
             //    Process.GetProcesses().Select(p => new ProcessData(p)));
-            var res =  new List<ProcessData>();
+            var res =  new List<MyProcess>();
            
             Process[] processes = Process.GetProcesses();
 
@@ -45,7 +45,7 @@ namespace CSharpLab5.LogicClasses
                     if (UnreachableProcesses.Contains(p.ProcessName) || p.HasExited)
                         { continue; }
 
-                    res.Add(new ProcessData(p));
+                    res.Add(new MyProcess(p));
                 }
                 catch (System.ComponentModel.Win32Exception e)
                 {

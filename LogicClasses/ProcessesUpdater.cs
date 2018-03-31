@@ -9,7 +9,7 @@ namespace CSharpLab5.LogicClasses
         // tried to create object in the helper thread and just change refs in the main one - 
         // not working - UI not updated
         // some closure problem?
-        public static void UpdateProcessCollection(IEnumerable<ProcessData> newProcesses, ObservableCollection<ProcessData> processes)
+        public static void UpdateProcessCollection(IEnumerable<MyProcess> newProcesses, ObservableCollection<MyProcess> processes)
         {
             if(processes == null)
             {
@@ -20,7 +20,7 @@ namespace CSharpLab5.LogicClasses
             // please write me what i did wrong in setting up binding to view, and updating vm async-y
             processes.Clear();
 
-            foreach (ProcessData p in newProcesses)
+            foreach (MyProcess p in newProcesses)
             {
                 processes.Add(p);
                 //collection.Add(p);
@@ -29,9 +29,9 @@ namespace CSharpLab5.LogicClasses
             //mainWindowViewModel.Processes = collection;
         }
 
-        public static void RefreshData(ObservableCollection<ProcessData> processes)
+        public static void RefreshData(ObservableCollection<MyProcess> processes)
         {
-            foreach (ProcessData data in processes)
+            foreach (MyProcess data in processes)
             {
                 data.Refresh();
             }

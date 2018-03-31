@@ -36,8 +36,9 @@ namespace CSharpLab5.ViewModels
 
         public ICommand ShowModulesForSelectedProcessCommand { get; } //, _ => ProcessSelected() )
         public ICommand ShowThreadsForSelectedProcessCommand { get; }
+        // i feel like it is doing more work than others, let it be async
         public ICommand OpenSelectedProcessDirCommand { get; }
-        public ICommand KillAndRemoveSelectedModuleCommand { get; } //, _ => ProcessSelected() )
+        public ICommand KillAndRemoveSelectedProcessCommand { get; } //, _ => ProcessSelected() )
 
         #endregion
 
@@ -54,15 +55,15 @@ namespace CSharpLab5.ViewModels
             processUpdater = new PeriodicalProcessesUpdater(this);
             processUpdater.StartRefreshing(CollectionUpdateInterval, ProcessesRefreshInterval, null, null);
 
-            ShowModulesForSelectedProcessCommand = new DelegateCommandAsync(ShowModulesForSelectedProcess, _ => ProcessSelected() );
-            ShowThreadsForSelectedProcessCommand = new DelegateCommandAsync(ShowThreadsForSelectedProcess, _ => ProcessSelected() );
+            ShowModulesForSelectedProcessCommand = new DelegateCommand(ShowModulesForSelectedProcess, _ => ProcessSelected() );
+            ShowThreadsForSelectedProcessCommand = new DelegateCommand(ShowThreadsForSelectedProcess, _ => ProcessSelected() );
             OpenSelectedProcessDirCommand = new DelegateCommandAsync(OpenSelectedProcessDir, _ => ProcessSelected() );
-            //KillAndRemoveSelectedModuleCommand = new DelegateCommandAsync();
+            KillAndRemoveSelectedProcessCommand = new DelegateCommand(KillAndRemoveSelectedProcess, _ => ProcessSelected() );
         }
 
         #region ContextMenu commands
 
-        async Task ShowModulesForSelectedProcess(object o)
+        void ShowModulesForSelectedProcess(object o)
         {
             Debug.Assert(ProcessSelected());
 
@@ -81,7 +82,7 @@ namespace CSharpLab5.ViewModels
             modulesWindow.ShowDialog();
         }
 
-        async Task ShowThreadsForSelectedProcess(object o)
+        void ShowThreadsForSelectedProcess(object o)
         {
             Debug.Assert(ProcessSelected());
 
@@ -109,12 +110,12 @@ namespace CSharpLab5.ViewModels
             Process.Start("explorer.exe", $"\"{Path.GetDirectoryName(SelectedProcess.Filename)}\"");
         }
 
-        async Task KillSelectedProcess(object o)
+        void KillAndRemoveSelectedProcess(object o)
         {
             Debug.Assert(ProcessSelected());
 
             SelectedProcess.Kill();
-            //Processes.Remove(SelectedProcess);
+            Processes.Remove(SelectedProcess);
             SelectedProcess = null;
             //TODO: select next/prev index
         }

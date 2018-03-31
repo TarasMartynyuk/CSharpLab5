@@ -30,6 +30,8 @@
                               Command="{Binding ShowThreadsForSelectedProcessCommand}"/>
                     <MenuItem Header="Open directory" 
                               Command="{Binding OpenSelectedProcessDirCommand}"/>
+                    <MenuItem Header="Kill" 
+                              Command="{Binding KillAndRemoveSelectedProcessCommand}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
